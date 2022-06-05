@@ -1,0 +1,41 @@
+version: '2'
+services:
+    redis:
+        image: sickp/alpine-redis:3.2.2
+        restart: on-failure
+        command: redis-server --port 6379 --protected-mode no
+        ports:
+            - "6379:6379"
+
+    postgres:
+        image: postgres:14.3-alpine
+        restart: on-failure
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - PGPORT=5432
+        ports:
+            - '5432:5432'
+
+    fast_api:
+        depends_on:
+            - redis
+            - postgres
+        restart: on-failure
+        build:
+          context: ./
+          dockerfile: Dockerfile
+        volumes:
+          - .:/user_api
+        ports:
+          - '8080:8080'
+        environment:
+            - POSTGRES_URL=postgresql://postgres:postgres@postgres:5432/postgres
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+            - ORDER_API_URL=http://fast_api:8090/orders/user/
+
+networks:
+    default:
+        external:
+            name: containers-shared

@@ -1,0 +1,9 @@
+uvicorn==0.17.6
+starlette==0.19.1
+fastapi==0.78.0
+SQLAlchemy==1.4.37
+psycopg2==2.9.3
+redis==4.3.3
+pydantic==1.9.1
+requests==2.27.1
+pytest==7.1.2
