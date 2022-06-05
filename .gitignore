@@ -1,2 +1,4 @@
 /.idea/
+/order_api/.idea/
+/user_api/.idea/
 Makefile
